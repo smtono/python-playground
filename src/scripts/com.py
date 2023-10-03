@@ -10,9 +10,9 @@ test = word.Documents
 doc = word.Documents.Open(os.path.join(os.getcwd(), "src", "data", "test.docx"))
 doc = doc.Document
 
-win32.Dispatch
-
 # manipulate word doc
+
+# https://learn.microsoft.com/en-us/office/vba/api/overview/library-reference/reference-object-library-reference-for-office
 
 
 # end of life
