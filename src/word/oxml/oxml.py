@@ -1,3 +1,14 @@
+"""
+# Creating standard OOXML elements
+paragraph = create_ooxml_element(OOXMLTags.PARAGRAPH, align='center')
+run = create_ooxml_element(OOXMLTags.RUN)
+text = create_ooxml_element(OOXMLTags.TEXT)
+
+# Creating custom instructions using easier names
+page_field = create_ooxml_element(OOXMLCustomInstructions.PAGE)
+toc_field = create_ooxml_element(OOXMLCustomInstructions.TABLE_OF_CONTENTS)
+"""
+
 from enum import Enum
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
@@ -8,14 +19,6 @@ class OOXMLTags(Enum):
     SUBJECT = "w:subject"
     AUTHOR = "w:author"
     DESCRIPTION = "w:description"
-    KEYWORDS = "w:keywords"
-    CATEGORY = "w:category"
-    CONTENT_STATUS = "w:contentStatus"
-    LAST_MODIFIED_BY = "w:lastModifiedBy"
-    REVISION = "w:revision"
-    LAST_PRINTED = "w:lastPrinted"
-    CREATED = "w:created"
-    MODIFIED = "w:modified"
 
     # Body elements
     PARAGRAPH = "w:p"
@@ -25,9 +28,6 @@ class OOXMLTags(Enum):
     TAB = "w:tab"
     BOOKMARK_START = "w:bookmarkStart"
     BOOKMARK_END = "w:bookmarkEnd"
-    COMMENT_RANGE_START = "w:commentRangeStart"
-    COMMENT_RANGE_END = "w:commentRangeEnd"
-    COMMENT_REFERENCE = "w:commentReference"
     FOOTNOTE_REFERENCE = "w:footnoteReference"
     ENDNOTE_REFERENCE = "w:endnoteReference"
     FIELD = "w:fldSimple"
@@ -62,9 +62,6 @@ class OOXMLTags(Enum):
     SECTION_PROPERTIES = "w:sectPr"
     HEADER_REFERENCE = "w:headerReference"
     FOOTER_REFERENCE = "w:footerReference"
-    PAGE_SIZE = "w:pgSz"
-    PAGE_MARGINS = "w:pgMar"
-    COLUMNS = "w:cols"
 
     # Lists
     NUMBERING = "w:numbering"
@@ -108,11 +105,14 @@ class OOXMLCustomInstructions(Enum):
     NOTEREF = 'NOTEREF'
 
 def create_ooxml_element(tag, **attributes):
-    element = OxmlElement(tag.value)
-    for key, value in attributes.items():
-        element.set(qn(key), value)
-    return element
-
-def create_custom_field(tag):
-    element = create_ooxml_element(OOXMLTags.FIELD, instr=tag.value)
-    return element
+    if isinstance(tag, OOXMLTags):
+        element = OxmlElement(tag.value)
+        for key, value in attributes.items():
+            element.set(qn(key), value)
+        return element
+    elif isinstance(tag, OOXMLCustomInstructions):
+        element = OxmlElement(OOXMLTags.FIELD.value)
+        element.set(qn('instr'), tag.value)
+        return element
+    else:
+        raise ValueError(f"Unsupported tag: {tag}")
