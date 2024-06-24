@@ -1,4 +1,5 @@
 """
+prepend calls with "add_paragraph" for the tag to have a container in the document
 # Creating standard OOXML elements
 paragraph = create_ooxml_element(OOXMLTags.PARAGRAPH, align='center')
 run = create_ooxml_element(OOXMLTags.RUN)
