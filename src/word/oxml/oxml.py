@@ -1,119 +1,99 @@
-"""
-prepend calls with "add_paragraph" for the tag to have a container in the document
-# Creating standard OOXML elements
-paragraph = create_ooxml_element(OOXMLTags.PARAGRAPH, align='center')
-run = create_ooxml_element(OOXMLTags.RUN)
-text = create_ooxml_element(OOXMLTags.TEXT)
-
-# Creating custom instructions using easier names
-page_field = create_ooxml_element(OOXMLCustomInstructions.PAGE)
-toc_field = create_ooxml_element(OOXMLCustomInstructions.TABLE_OF_CONTENTS)
-"""
-
 from enum import Enum
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 
-class OOXMLTags(Enum):
+class OOXMLTag(Enum):
     # Document properties
-    TITLE = "w:title"
-    SUBJECT = "w:subject"
-    AUTHOR = "w:author"
-    DESCRIPTION = "w:description"
+    TITLE = "title"
+    SUBJECT = "subject"
+    AUTHOR = "author"
+    DESCRIPTION = "description"
+    KEYWORDS = "keywords"
+    CATEGORY = "category"
+    CONTENT_STATUS = "contentStatus"
+    LAST_MODIFIED_BY = "lastModifiedBy"
+    REVISION = "revision"
+    LAST_PRINTED = "lastPrinted"
+    CREATED = "created"
+    MODIFIED = "modified"
 
     # Body elements
-    PARAGRAPH = "w:p"
-    RUN = "w:r"
-    TEXT = "w:t"
-    BREAK = "w:br"
-    TAB = "w:tab"
-    BOOKMARK_START = "w:bookmarkStart"
-    BOOKMARK_END = "w:bookmarkEnd"
-    FOOTNOTE_REFERENCE = "w:footnoteReference"
-    ENDNOTE_REFERENCE = "w:endnoteReference"
-    FIELD = "w:fldSimple"
-    HYPERLINK = "w:hyperlink"
+    PARAGRAPH = "p"
+    RUN = "r"
+    TEXT = "t"
+    BREAK = "br"
+    TAB = "tab"
+    BOOKMARK_START = "bookmarkStart"
+    BOOKMARK_END = "bookmarkEnd"
+    COMMENT_RANGE_START = "commentRangeStart"
+    COMMENT_RANGE_END = "commentRangeEnd"
+    COMMENT_REFERENCE = "commentReference"
+    FOOTNOTE_REFERENCE = "footnoteReference"
+    ENDNOTE_REFERENCE = "endnoteReference"
+    FIELD = "fldSimple"
+    HYPERLINK = "hyperlink"
 
     # Table elements
-    TABLE = "w:tbl"
-    TABLE_ROW = "w:tr"
-    TABLE_CELL = "w:tc"
-    TABLE_GRID = "w:tblGrid"
-    TABLE_HEADER = "w:tblHeader"
-    TABLE_FOOTER = "w:tblFooter"
-    TABLE_PROPERTIES = "w:tblPr"
-    TABLE_ROW_PROPERTIES = "w:trPr"
-    TABLE_CELL_PROPERTIES = "w:tcPr"
-    TABLE_STYLE = "w:tblStyle"
+    TABLE = "tbl"
+    TABLE_ROW = "tr"
+    TABLE_CELL = "tc"
+    TABLE_GRID = "tblGrid"
+    TABLE_HEADER = "tblHeader"
+    TABLE_FOOTER = "tblFooter"
+    TABLE_PROPERTIES = "tblPr"
+    TABLE_ROW_PROPERTIES = "trPr"
+    TABLE_CELL_PROPERTIES = "tcPr"
+    TABLE_STYLE = "tblStyle"
 
     # Styles
-    STYLE = "w:style"
-    STYLE_NAME = "w:name"
-    BASE_STYLE = "w:basedOn"
-    NEXT_STYLE = "w:next"
-    LINKED_STYLE = "w:link"
-    STYLE_PARAGRAPH_PROPERTIES = "w:pPr"
-    STYLE_RUN_PROPERTIES = "w:rPr"
-    STYLE_TABLE_PROPERTIES = "w:tblPr"
-    STYLE_TABLE_ROW_PROPERTIES = "w:trPr"
-    STYLE_TABLE_CELL_PROPERTIES = "w:tcPr"
-    STYLE_TYPE = "w:type"
+    STYLE = "style"
+    STYLE_NAME = "name"
+    BASE_STYLE = "basedOn"
+    NEXT_STYLE = "next"
+    LINKED_STYLE = "link"
+    STYLE_PARAGRAPH_PROPERTIES = "pPr"
+    STYLE_RUN_PROPERTIES = "rPr"
+    STYLE_TABLE_PROPERTIES = "tblPr"
+    STYLE_TABLE_ROW_PROPERTIES = "trPr"
+    STYLE_TABLE_CELL_PROPERTIES = "tcPr"
+    STYLE_TYPE = "type"
 
     # Sections
-    SECTION_PROPERTIES = "w:sectPr"
-    HEADER_REFERENCE = "w:headerReference"
-    FOOTER_REFERENCE = "w:footerReference"
+    SECTION_PROPERTIES = "sectPr"
+    HEADER_REFERENCE = "headerReference"
+    FOOTER_REFERENCE = "footerReference"
+    PAGE_SIZE = "pgSz"
+    PAGE_MARGINS = "pgMar"
+    COLUMNS = "cols"
 
     # Lists
-    NUMBERING = "w:numbering"
-    NUMBERING_PROPERTIES = "w:numPr"
-    NUMBERING_ID = "w:numId"
-    ABSTRACT_NUM_ID = "w:abstractNumId"
-    LEVEL = "w:lvl"
-    LEVEL_TEXT = "w:lvlText"
-    LEVEL_JC = "w:lvlJc"
-    LEVEL_PPR = "w:lvlPPr"
-    LEVEL_RPR = "w:lvlRPr"
-    BULLET = "w:bullets"
-    NUMBERING_STYLE = "w:numStyleLink"
+    NUMBERING = "numbering"
+    NUMBERING_PROPERTIES = "numPr"
+    NUMBERING_ID = "numId"
+    ABSTRACT_NUM_ID = "abstractNumId"
+    LEVEL = "lvl"
+    LEVEL_TEXT = "lvlText"
+    LEVEL_JC = "lvlJc"
+    LEVEL_PPR = "lvlPPr"
+    LEVEL_RPR = "lvlRPr"
+    BULLET = "bullets"
+    NUMBERING_STYLE = "numStyleLink"
 
     # Misc
-    DRAWING = "w:drawing"
-    INLINE = "w:inline"
-    ANCHOR = "w:anchor"
-    EXTENT = "w:extent"
-    EFFECT_EXTENT = "w:effectExtent"
-    WRAP_NONE = "w:wrapNone"
-    WRAP_SQUARE = "w:wrapSquare"
-    WRAP_TIGHT = "w:wrapTight"
-    WRAP_THROUGH = "w:wrapThrough"
-    WRAP_TOP_AND_BOTTOM = "w:wrapTopAndBottom"
-    PICTURE = "w:pic"
-    SHAPE = "w:sp"
+    DRAWING = "drawing"
+    INLINE = "inline"
+    ANCHOR = "anchor"
+    EXTENT = "extent"
+    EFFECT_EXTENT = "effectExtent"
+    WRAP_NONE = "wrapNone"
+    WRAP_SQUARE = "wrapSquare"
+    WRAP_TIGHT = "wrapTight"
+    WRAP_THROUGH = "wrapThrough"
+    WRAP_TOP_AND_BOTTOM = "wrapTopAndBottom"
+    PICTURE = "pic"
+    SHAPE = "sp"
 
-class OOXMLCustomInstructions(Enum):
+class OOXMLInstruction(Enum):
     TABLE_OF_CONTENTS = r'TOC \o "1-3" \h \z \u'
     TABLE_OF_FIGURES = r'TOC \c "Figure" \h \z \u'
     TABLE_OF_TABLES = r'TOC \c "Table" \h \z \u'
-    PAGE = 'PAGE'
-    NUMPAGES = 'NUMPAGES'
-    DATE = 'DATE'
-    TIME = 'TIME'
-    FILENAME = 'FILENAME'
-    AUTHOR = 'AUTHOR'
-    DOCPROPERTY = 'DOCPROPERTY'
-    REF = 'REF'
-    NOTEREF = 'NOTEREF'
-
-def create_ooxml_element(tag, **attributes):
-    if isinstance(tag, OOXMLTags):
-        element = OxmlElement(tag.value)
-        for key, value in attributes.items():
-            element.set(qn(key), value)
-        return element
-    elif isinstance(tag, OOXMLCustomInstructions):
-        element = OxmlElement(OOXMLTags.FIELD.value)
-        element.set(qn('instr'), tag.value)
-        return element
-    else:
-        raise ValueError(f"Unsupported tag: {tag}")
