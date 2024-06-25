@@ -97,3 +97,13 @@ class OOXMLInstruction(Enum):
     TABLE_OF_CONTENTS = r'TOC \o "1-3" \h \z \u'
     TABLE_OF_FIGURES = r'TOC \c "Figure" \h \z \u'
     TABLE_OF_TABLES = r'TOC \c "Table" \h \z \u'
+
+def create_ooxml_element(tag: OOXMLTag, **attributes):
+    element = OxmlElement(f'w:{tag.value}')
+    for key, value in attributes.items():
+        element.set(qn(f'w:{key}'), value)
+    return element
+
+def create_custom_field(tag: OOXMLInstruction):
+    element = create_ooxml_element(OOXMLTag.FIELD, instr=tag.value)
+    return element

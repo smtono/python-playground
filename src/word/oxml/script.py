@@ -1,6 +1,6 @@
 from docx import Document
-from oxml import OOXMLTag, OOXMLInstruction
-from oxml_util import add_hyperlink, create_custom_field, create_ooxml_element
+from oxml import OOXMLTag, OOXMLInstruction, create_ooxml_element, create_custom_field
+from oxml_util import add_table_of_contents
 
 # Create a new Document
 doc = Document()
@@ -8,6 +8,7 @@ doc = Document()
 # Add a title
 doc.add_heading('Document Title', level=1)
 
+add_table_of_contents(doc)
 
 # # Add a Table of Figures
 # doc.add_paragraph('Table of Figures', style='Heading 1')
@@ -29,11 +30,11 @@ for i in range(1, 4):
         for k in range(1, 4):
             doc.add_paragraph(f'This is paragraph {i}.{j}.{k}.')
 
-# Add references page
-doc.add_heading('References', level=1)
-p = doc.add_paragraph('For more information, visit ')
-run = p.add_run()
-add_hyperlink(p, 'https://www.openai.com', 'OpenAI')
+# # Add references page
+# doc.add_heading('References', level=1)
+# p = doc.add_paragraph('For more information, visit ')
+# run = p.add_run()
+# add_hyperlink(p, 'https://www.openai.com', 'OpenAI')
 
 # Save the document
 doc.save('complete_document_with_custom_instructions.docx')
