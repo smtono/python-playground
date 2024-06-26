@@ -1,6 +1,7 @@
 from docx import Document
 from oxml import OOXMLTag, OOXMLInstruction, create_ooxml_element, create_custom_field
 from oxml_util import add_table_of_contents
+from word.com.com_util import update_fields
 
 # Create a new Document
 doc = Document()
@@ -38,3 +39,4 @@ for i in range(1, 4):
 
 # Save the document
 doc.save('complete_document_with_custom_instructions.docx')
+update_fields(r'C:\Users\smtho\workspaces\vscode\python-playground\complete_document_with_custom_instructions.docx')
