@@ -7,6 +7,7 @@ from oxml import create_custom_field
 
 # Add a Table of Contents
 def add_table_of_contents(doc: Document):
+    """Adds table of contents to document container"""
     doc.add_paragraph('Table of Contents', style='Heading 1')
     toc = create_custom_field(OOXMLInstruction.TABLE_OF_CONTENTS)
     p = doc.add_paragraph()
