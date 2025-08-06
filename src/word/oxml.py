@@ -37,5 +37,3 @@ def copy_table(source_table, destination_document, csv_file):
         for j, cell in enumerate(row.cells):
             # Copy cell style
             destination_table.cell(i, j)._element.get_or_add_tcPr().append(cell._element.tcPr)
-
-
