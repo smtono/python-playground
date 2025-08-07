@@ -1,8 +1,9 @@
 def reverse_word(word):
-    reversed = ""
+    rev = ""
     for letter in word:
-        reversed = letter + reversed
-    return reversed
+        rev = letter + rev
+    return rev
+
 
 if __name__ == "__main__":
     word = input("Word: ")
